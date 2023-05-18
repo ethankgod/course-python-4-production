@@ -13,6 +13,7 @@ class DB:
         make_dir(self._db_save_path)
         self._connection = sqlite3.connect(os.path.join(self._db_save_path, db_name),
                                            check_same_thread=False)
+        self._cursor = self._connection.cursor()
         self._table_name = 'processes'
         self._col_order = ['process_id', 'file_name', 'file_path', 'description', 'start_time', 'end_time', 'percentage']
 
@@ -28,6 +29,24 @@ class DB:
 
         return 0
 
+    def update_table_columns(self):
+        """
+        Update the table columns in the database.
+        """
+        # Add the missing column using ALTER TABLE
+        query = f'ALTER TABLE {self._table_name} ADD COLUMN file_path TEXT'
+        self._cursor.execute(query)
+        self._connection.commit()
+
+    def delete_all_processes(self):
+        """
+        Delete all records from the 'processes' table.
+        """
+        query = 'DELETE FROM processes'
+        self._cursor.execute(query)
+        self._connection.commit()
+
+
     def create_table(self) -> None:
         """
         Create a table if it doesn't exist with the below schema
@@ -37,6 +56,7 @@ class DB:
 
         - process_id : TEXT (not null)
         - file_name : TEXT (default is null)
+        - file_path : TEXT (default is null)
         - description : TEXT (default is null)
         - start_time : TEXT (not null)
         - end_time : TEXT (default is null)
@@ -45,7 +65,19 @@ class DB:
         Read more about datatypes in Sqlite here -> https://www.sqlite.org/datatype3.html
         """
     ######################################## YOUR CODE HERE ##################################################
-
+        query = f"""
+                CREATE TABLE IF NOT EXISTS {self._table_name} (
+                    process_id TEXT NOT NULL,
+                    file_name TEXT DEFAULT NULL,
+                    file_path TEXT DEFAULT NULL,
+                    description TEXT DEFAULT NULL,
+                    start_time TEXT NOT NULL,
+                    end_time TEXT DEFAULT NULL,
+                    percentage REAL DEFAULT NULL
+                );
+                """
+        self._cursor.execute(query)
+        self._connection.commit()
     ######################################## YOUR CODE HERE ##################################################
 
     def insert(self, process_id, start_time, file_name=None, file_path=None,
@@ -63,7 +95,20 @@ class DB:
         :return: None
         """
     ######################################## YOUR CODE HERE ##################################################
-
+        query = f"""
+        INSERT INTO {self._table_name} (
+            process_id,
+            file_name,
+            file_path,
+            description,
+            start_time,
+            end_time,
+            percentage
+        ) VALUES (?, ?, ?, ?, ?, ?, ?);
+        """
+        values = (process_id, file_name, file_path, description, start_time, end_time, percentage)
+        self._cursor.execute(query, values)
+        self._connection.commit()
     ######################################## YOUR CODE HERE ##################################################
 
     def read_all(self) -> List[Dict]:
@@ -95,7 +140,14 @@ class DB:
         :return: None
         """
     ######################################## YOUR CODE HERE ##################################################
-
+        query = f"""
+            UPDATE {self._table_name}
+            SET percentage = ?
+            WHERE process_id = ?;
+            """
+        values = (percentage, process_id)
+        self._cursor.execute(query, values)
+        self._connection.commit()
     ######################################## YOUR CODE HERE ##################################################
 
 

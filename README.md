@@ -2,7 +2,7 @@
 
 ## Install all dependencies
 
-- Make you're using Python version >= 3.9.0
+- Make sure you're using Python version >= 3.9.0
 - Install all the modules
 
 ```

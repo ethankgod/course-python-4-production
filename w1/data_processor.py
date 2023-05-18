@@ -63,10 +63,10 @@ class DataProcessor:
 
     def aggregate(self, column_name: str) -> float:
         """
-        Input : List[str]
-        Output : Dict
+        Input : str 
+        Output : float
 
-        This method should use the generator method assigned to seld.data_reader and return aggregate
+        This method should use the generator method assigned to self.data_reader and return aggregate
         of the column mentioned in the `column_name` variable
 
         For example if the `column_name` -> 'TotalPrice' and the file format is as below:
@@ -74,7 +74,7 @@ class DataProcessor:
         StockCode    , Description    , UnitPrice  , Quantity, TotalPrice , Country
         22180        , RETROSPOT LAMP , 19.96      , 4       , 79.84      , Russia
         23017        , APOTHECARY JAR , 24.96      , 1       , 24.96      , Germany
-        84732D       , IVORY CLOCK    , 0.39       , 2       , 0.78       ,India
+        84732D       , IVORY CLOCK    , 0.39       , 2       , 0.78       , India
 
         aggregate should be 105.58
         """

@@ -18,14 +18,14 @@ def revenue_per_region(dp: DataProcessor) -> Dict:
     Input : object of instance type Class DataProcessor
     Output : Dict
 
-    The method should find the aggregate revenue per region
+    This method should find the aggregate revenue per region
 
     For example if the file format is as below:
 
     StockCode    , Description    , UnitPrice  , Quantity, TotalPrice , Country
     22180        , RETROSPOT LAMP , 19.96      , 4       , 79.84      , Russia
     23017        , APOTHECARY JAR , 24.96      , 1       , 24.96      , Germany
-    84732D       , IVORY CLOCK    , 0.39       , 2       , 0.78       ,India
+    84732D       , IVORY CLOCK    , 0.39       , 2       , 0.78       , India
     ...
     ...
     ...
